@@ -1,0 +1,18 @@
+li{
+    list-style: none;
+    line-height: 24px;
+}
+
+.isfolder{
+    font-weight: bolder;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: normal;
+}
+
+#terminal {
+    width: 100%;
+    height: 100%;
+    font-size: smaller;
+    overflow: hidden;
+  }
+  
