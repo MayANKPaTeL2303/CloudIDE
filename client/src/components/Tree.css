@@ -1,0 +1,41 @@
+.file-tree {
+  font-family: monospace;
+  font-size: 14px;
+  user-select: none;
+  position: relative;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 10px;
+  margin: 0;
+}
+
+.tree-node {
+  display: block;
+  cursor: pointer;
+}
+
+.tree-node.selected {
+  background-color: #e0e0e0;
+}
+
+.context-menu {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  padding: 4px 0;
+  border-radius: 4px;
+  min-width: 120px;
+}
+
+.context-menu div {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.context-menu div:hover {
+  background-color: #f0f0f0;
+}

@@ -1,0 +1,8 @@
+- Design the page
+- Allow users to create, rename, delete, and move files/folders.
+- Integrate a code editor like Monaco or CodeMirror for syntax highlighting and code editing.
+- Support multiple programming languages.
+- Add features like line numbers, auto-complete, and find/replace.
+- Allow users to open multiple files in tabs.
+- Allow users to run code (for supported languages) and see output.
+- For web projects, provide a live preview panel.

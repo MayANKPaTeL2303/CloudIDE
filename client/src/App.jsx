@@ -1,6 +1,7 @@
 import { useCallback, useEffect,useState } from "react";
-import Terminal from "./components/terminal";
+import Terminal from "./components/Terminal";
 import Tree from "./components/Tree";
+import Navbar from "./components/Navbar";
 import socket from "./socket";
 import AceEditor from "react-ace";
 import './App.css'
@@ -19,11 +20,11 @@ function App() {
 
   const isSaved = selectedFileContent === code
 
-  const getFileTree = async()=>{
-    const response = await fetch('http://localhost:9000/files')
+  const getFileTree = useCallback(async () => {
+    const response = await fetch('http://localhost:9000/files');
     const result = await response.json();
-    setFileTree(result.tree);   
-  };
+    setFileTree(result.tree);
+  }, []);
 
   const getFilecontent = useCallback(async ()=>{
       if(!selectedFile) return;
@@ -38,7 +39,7 @@ function App() {
   },[getFilecontent,selectedFile])
 
   useEffect(()=>{
-    if(selectedFile && selectedFileContent)
+    if(selectedFile && selectedFileContent !== "")
     {
       setCode(selectedFileContent)
     }
@@ -46,7 +47,7 @@ function App() {
 
   useEffect(()=>{
     getFileTree()
-  },[])
+  },[getFileTree])
 
   useEffect(()=>{
     socket.on('file:refresh',getFileTree);
@@ -62,44 +63,86 @@ function App() {
           path: selectedFile,
           content: code
         })
-      },3*1000)
+      }, 3000)
       return ()=>{
         clearTimeout(timer)
       }
     }
   },[code,selectedFile, isSaved])
-  return (
-    <>
-      <div className="playground-container">
-        <div className="editor-container">
-          <div className="files">
-            <Tree onSelect={(path)=>{setselectedFile(path)}} tree={fileTree}/>
-          </div>
+
+  // Right click action (delete, rename)
+  const handleRename = async (oldPath, newPath) => {
+    await fetch('http://localhost:9000/files/rename', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ oldPath, newPath }),
+    });
+    getFileTree();
+  };
+  const handleDelete = async (path) => {
+    await fetch('http://localhost:9000/files/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path }),
+    });
+    if (selectedFile === path) {
+      setselectedFile('');
+      setCode('');
+    }
+    getFileTree();
+  };
+
+
+
+return (
+  <>
+    <Navbar />
+    <div className="playground-container">
+      <div className="main-row">
+        <div className="files">
+          <Tree
+            tree={fileTree}
+            onSelect={(path) => {if (!path.endsWith('/')) setselectedFile(path);}}
+            selectedFile={selectedFile} 
+            onRename={handleRename}
+            onDelete={handleDelete}
+          />
+        </div>
+        <div className="editor-terminal">
           <div className="editor">
-            {selectedFile && <p>{selectedFile.replaceAll('/','-->')} {isSaved? 'Saved':'UnSaved'}</p>}
+            {selectedFile && (
+              <p className="file-status">
+                {selectedFile.replaceAll('/', ' ➝ ')} &nbsp;
+                <span className={isSaved ? 'saved' : 'unsaved'}>
+                  {isSaved ? 'Saved' : 'Unsaved'}
+                </span>
+              </p>
+            )}          
             <AceEditor
-            mode="javascript"     
-            theme="monokai"           
-            value={code}              
-            name="codeEditor"         
-            editorProps={{ $blockScrolling: true }}
-            setOptions={{
-              enableBasicAutocompletion: true,
-              enableLiveAutocompletion: true,
-              showLineNumbers: true,
-              tabSize: 2,
-            }}
-            height="600px"
-            onChange={(e)=> setCode(e)}
+              mode="javascript"     
+              theme="monokai"           
+              value={code}              
+              name="codeEditor"         
+              editorProps={{ $blockScrolling: true }}
+              setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                showLineNumbers: true,
+                tabSize: 2,
+              }}
+              height="100%"
+              width="100%"
+              onChange={(e)=> setCode(e)}
             />
           </div>
-        </div>
-        <div className="terminal-container">
-          <Terminal />
+          <div className="terminal-container">
+            <Terminal />
+          </div>
         </div>
       </div>
-    </>
-  );
+    </div>
+  </>
+);
 }
 
 export default App;
