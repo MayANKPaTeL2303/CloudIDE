@@ -21,7 +21,7 @@ const server = http.createServer(app);
 // 🔌 Setup WebSocket with CORS
 const io = new Server(server, {
   cors: {
-    origin: "*", // Restrict in production
+    origin: "https://cloud-ide-beta.vercel.app/",
     methods: ["GET", "POST"],
   },
 });

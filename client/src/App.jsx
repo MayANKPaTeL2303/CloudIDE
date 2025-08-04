@@ -5,6 +5,10 @@ import Navbar from "./components/Navbar";
 import socket from "./socket";
 import AceEditor from "react-ace";
 import './App.css'
+import dotenv from 'dotenv';
+dotenv.config();
+
+const API = process.env.REACT_APP_API_URL || 'http://localhost:9000';
 
 
 import "ace-builds/src-noconflict/mode-javascript";
@@ -21,7 +25,7 @@ function App() {
   const isSaved = selectedFileContent === code
 
   const getFileTree = useCallback(async () => {
-    const response = await fetch('http://localhost:9000/files');
+    const response = await fetch(`${API}/files`);
     const result = await response.json();
     setFileTree(result.tree);
   }, []);
@@ -29,7 +33,7 @@ function App() {
   const getFilecontent = useCallback(async ()=>{
       if(!selectedFile) return;
   
-      const response = await fetch(`http://localhost:9000/files/content?path=${selectedFile}`)
+      const response = await fetch(`{API}/files/content?path=${selectedFile}`)
       const result = await response.json();
       setselectedFileContent(result.content)
   },[selectedFile])
@@ -72,7 +76,7 @@ function App() {
 
   // Right click action (delete, rename)
   const handleRename = async (oldPath, newPath) => {
-    await fetch('http://localhost:9000/files/rename', {
+    await fetch(`${API}/files/rename`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ oldPath, newPath }),
@@ -80,7 +84,7 @@ function App() {
     getFileTree();
   };
   const handleDelete = async (path) => {
-    await fetch('http://localhost:9000/files/delete', {
+    await fetch(`{API}/files/delete`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ path }),
