@@ -1,21 +1,23 @@
 # Cloud IDE
 
-A web-based Integrated Development Environment (IDE) that enables users to write, edit, and manage code directly from their browser.
+A web-based Integrated Development Environment (IDE) that enables users to write, edit, and manage code directly from their browser. This full-stack project provides a seamless experience for coding, compiling, and collaborating from anywhere.
+
+---
 
 ## Features
 
 - Modern, responsive UI for code editing
 - Syntax highlighting and code formatting
-- File management (create, edit, delete files)
+- Real-time collaboration (via Socket.IO)
+- File management: create, edit, delete, and organize files
 - Project organization
 - Live preview (if supported)
 - Easy setup and development workflow
 
 ## Tech Stack
 
-- **Frontend:** React, CSS
-- **Build Tool:** (e.g., Vite, Create React App, Webpack) — Please specify if known
-- **Other:** (List any backend, API, or additional technologies if present)
+- **Frontend:** React, Vite, CSS
+- **Backend:** Node.js, Express, Socket.IO
 
 ## Getting Started
 
@@ -32,7 +34,7 @@ A web-based Integrated Development Environment (IDE) that enables users to write
     cd CloudIDE
     ```
 
-2. Install dependencies:
+2. Install frontend dependencies:
     ```bash
     cd client
     npm install
@@ -40,44 +42,59 @@ A web-based Integrated Development Environment (IDE) that enables users to write
     yarn install
     ```
 
-3. Start the development server:
+3. Install backend dependencies:
     ```bash
-    npm start
+    cd ../server
+    npm install
     # or
-    yarn start
+    yarn install
     ```
 
-4. Open your browser and navigate to `http://localhost:3000` (or the port specified in your setup).
+4. Start the backend server:
+    ```bash
+    npm start
+    ```
+
+5. In a new terminal, start the frontend development server:
+    ```bash
+    cd ../client
+    npm run dev
+    # or
+    yarn dev
+    ```
+
+6. Open your browser and navigate to `http://localhost:5173` (or the port specified by Vite).
 
 ## Project Structure
 
 ```
 CloudIDE/
-├── client/
+├── client/           # Frontend (React + Vite)
 │   ├── index.html
 │   ├── src/
 │   │   ├── App.jsx
 │   │   ├── App.css
 │   │   └── index.css
-│   └── ... (other files)
+│   └── ...
+├── server/           # Backend (Node.js + Express + Socket.IO)
+│   ├── index.js
+│   ├── package.json
+│   └── ...
 ├── work.txt
-└── ... (other files)
+├── README.md
+└── ...
 ```
 
-## Contributing
-
-Contributions are welcome! Please open issues or submit pull requests for improvements or bug fixes.
 
 ## Author
 
 - [MayANKPaTeL2303](https://github.com/MayANKPaTeL2303)
 
 
-A cloud-based integrated development environment (IDE) designed for developers to code, compile, and collaborate seamlessly from anywhere. This project provides an accessible, feature-rich environment that mimics the functionality of traditional IDEs with the convenience of the cloud.
-
 ---
 
-## Features
+A cloud-based integrated development environment (IDE) designed for developers to code, compile, and collaborate seamlessly from anywhere. This project provides an accessible, feature-rich environment that mimics the functionality of traditional IDEs with the convenience of the cloud.
+
 
 - **Real-time Code Collaboration**: Collaborate on code with team members in real time.
 - **Multi-language Support**: Write and run code in multiple programming languages.
